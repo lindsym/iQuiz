@@ -7,11 +7,32 @@
 
 import UIKit
 
+class Quiz {
+    var questions : [String]
+    var choices: [[String]]
+    var answers: [String]
+    
+    var questionNum = 0
+    var numCorrect = 0
+    var wasCorrect = false
+    
+    
+    init(questions : [String], choices: [[String]], answers: [String]) {
+        self.questions = questions
+        self.choices = choices
+        self.answers = answers
+    }
+}
+
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    var mathQuiz = Quiz(questions: ["Math 4+4", "Math 3+3", "Math 2+2"], choices: [["8", "6", "4"], ["8", "6", "4"], ["8", "6", "4"]], answers: ["8", "6", "4"])
+    var marvelQuiz = Quiz(questions: ["Marvel choose 1", "Marvel choose 2", "Marvel choose 3", "Marvel choose 4"], choices: [["1", "2", "3", "4"],  ["1", "2", "3", "4"], ["1", "2", "3", "4"], ["1", "2", "3", "4"]], answers: ["1", "2", "3", "4"])
+    var scienceQuiz = Quiz(questions: ["Science choose 3", "Science choose 2"], choices: [["3", "2"],  ["3", "2"]], answers: ["3", "2"])
 
     
     @IBOutlet weak var settings: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
+    
     
     struct QuizCell {
         let title: String
@@ -48,12 +69,30 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableView.delegate = self
     }
     
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        print("tapped here")
-//    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "seg1", sender:self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "seg1" {
+            if ((tableView.indexPathForSelectedRow?.row) == 0) {
+                let destinationVC = segue.destination as? SecondViewController
+                destinationVC?.quiz = mathQuiz
+            }
+             else if ((tableView.indexPathForSelectedRow?.row) == 1) {
+                let destinationVC = segue.destination as? SecondViewController
+                destinationVC?.quiz = marvelQuiz
+            }
+            else if ((tableView.indexPathForSelectedRow?.row) == 2) {
+                let destinationVC = segue.destination as? SecondViewController
+                destinationVC?.quiz = scienceQuiz
+            }
+
+        }
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(data.count)
         return data.count
     }
     
@@ -69,6 +108,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 140
     }
+    
+    
 
 }
 
