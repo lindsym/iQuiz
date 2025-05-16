@@ -65,10 +65,6 @@ class SecondViewController: UIViewController, UIPickerViewDelegate {
         }
     }
 
-
-    
-    
-
     
     
     override func viewDidLoad() {
